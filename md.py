@@ -39,7 +39,7 @@ def bookmarks_to_md(Netscape_file, connection=False):
             folder_title = element.find('h3', recursive=False)
             if folder_title:
                 if folder_title.parent.a is None:  # empty folders
-                    print(folder_title.string, 'is empty, has removed.')
+                    print(folder_title.string, 'is empty, has been removed.')
                 else:
                     f.write('\n###  ' + folder_title.string + "\n")
                     folder = element.dt.find('a', recursive=False)
