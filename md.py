@@ -5,12 +5,14 @@ import argparse
 from requests import RequestException
 
 
-parser = argparse.ArgumentParser(description="Convert & Clean Netscape file to Markdown, and can publish md for example hexo")
-parser.add_argument("-i", "--input",help="the Netscape file path ")
-parser.add_argument("-o", "--output", default= "Bookmarks.md",help="the outpur md path,default is 'Bookmarks.md'")
+parser = argparse.ArgumentParser(description="Convert & Clean a Netscape file to Markdown, and can publish md for example hexo")
+parser.add_argument("-f", "--file",help="the Netscape file path ")
+parser.add_argument("-o", "--output_file", default= "Bookmarks.md",help="the output md path,default is 'Bookmarks.md'")
 parser.add_argument("-n", "--connection", default="false",help="if you have network connection then will fetch the url such as titles,default is false")
+parser.add_argument("-i", "--icon", default="false",help="if you need additional favicons, default is false ")
 args = parser.parse_args()
 conn = "True" == str(args.connection.capitalize())
+icon = "True" == str(args.icon.capitalize())
 
 links = {}
 
@@ -39,7 +41,7 @@ def bookmarks_to_md(Netscape_file, connection=False):
             folder_title = element.find('h3', recursive=False)
             if folder_title:
                 if folder_title.parent.a is None:  # empty folders
-                    print(folder_title.string, 'is empty, has been removed.')
+                    print(folder_title.string, 'is empty, the duplicated has been removed.')
                 else:
                     f.write('\n###  ' + folder_title.string + "\n")
                     folder = element.dt.find('a', recursive=False)
@@ -48,7 +50,7 @@ def bookmarks_to_md(Netscape_file, connection=False):
                             if a['href'] in links:
                                 links[a['href']].append(
                                     str(folder_title.string))
-                                print("the %s has found in %s , its a duplicated link, it's been removed" % (
+                                print("the %s has found in %s , its a duplicated link, the duplicated has been removed" % (
                                     a['href'], links[a['href']]))
                             else:
                                 links[a['href']] = [folder_title.string]
@@ -72,7 +74,7 @@ def bookmarks_to_md(Netscape_file, connection=False):
                                 else:
                                     #                                 print(a.string)
                                     #                                 print(a['href'])
-                                    if re.search("icon", str(a), re.S):
+                                    if re.search("icon", str(a), re.S) and icon:
                                         try:
                                             f.write("\n[{0}]:{1}\n".format(
                                                 a.string, a['icon']))
@@ -102,11 +104,18 @@ def bookmarks_to_md(Netscape_file, connection=False):
 
 def write_to_md(file, connection=False):
     with open(file, encoding='utf-8') as fl:
-        soup = BeautifulSoup(fl, "html5lib").body.dt
+        soup = BeautifulSoup(fl, "html5lib").body
         for p in soup.find_all('p'):
             p.unwrap()
         for dl in soup.find_all('dl'):
             dl.unwrap()
+        for dd in soup.find_all('dd'):   # mozilla fox
+            dd.unwrap()
+        tp = soup.find_all('h3',text=re.compile("Bookmarks|书签"))[0].parent
+        if tp.a:
+            soup=tp
+        else:
+            soup=tp.parent
         # print(soup.prettify())
         fl.close()
         for title in soup.find_all('dt', recursive=False):
@@ -119,12 +128,12 @@ def write_to_md(file, connection=False):
                     bookmarks_to_md(title, connection=connection)
 
 def main():
-    write_to_md(args.input, connection = conn)
+    write_to_md(args.file, connection = conn)
     print("Total Links: ",len(links))
 
 
 
 if __name__ == '__main__':
-    with open(args.output, "w", encoding='utf-8') as f:
+    with open(args.output_file, "w", encoding='utf-8') as f:
         main()
         f.close()
