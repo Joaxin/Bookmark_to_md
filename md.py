@@ -111,7 +111,7 @@ def write_to_md(file, connection=False):
             dl.unwrap()
         for dd in soup.find_all('dd'):   # mozilla fox
             dd.unwrap()
-        tp = soup.find_all('h3',text=re.compile("Bookmarks|书签"))[0].parent
+        tp = soup.find_all('h3',text=re.compile("Bookmarks|书签|书签栏"))[0].parent
         if tp.a:
             soup=tp
         else:
