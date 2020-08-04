@@ -18,6 +18,41 @@ md.py -f "Firefox.html" -o "Firefox_Bookmarks.md"
 
 ### Basic Bookmarks Structure
 
+**Firfox**
+
+```html
+<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<!-- This is an automatically generated file.
+     It will be read and overwritten.
+     DO NOT EDIT! -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks</H1>
+<DL><p># Ancestors
+    <DT><H3 ADD_DATE="*" LAST_MODIFIED="*" PERSONAL_TOOLBAR_FOLDER="true">书签栏</H3> # Ancestors' names
+    <DL><p>## Grandparents
+        <DT><H3 ADD_DATE="*" LAST_MODIFIED="*">"##"</H3> ## Grandparents' names
+        <DL><p>### Parents
+            <DT><H3 ADD_DATE="*" LAST_MODIFIED="*">"###"</H3> ### Parent1's  name
+            <DL><p>#### children
+                <DT><A HREF="url1" ADD_DATE="*" ICON="data:image/png;base6,*">TEXT1</A>
+                <DT><A HREF="url2" ADD_DATE="*" ICON="data:image/png;base6,*">TEXT2</A>
+                <DT><A HREF="url3" ADD_DATE="*" ICON="data:image/png;base6,*">TEXT3</A>
+                <DT><A HREF="url" ADD_DATE="*" ICON="data:image/png;base6,*">TEXT</A>
+                <DT><A HREF="url" ADD_DATE="*" ICON="data:image/png;base6,*">TEXT</A>
+                .....
+            <DT><H3 ADD_DATE="*" LAST_MODIFIED="*">"###"</H3> ### Parent2's  name
+                <DT><A HREF="url1" ADD_DATE="*" ICON="data:image/png;base6,*">TEXT1</A>
+            ......
+            </DL><p
+            .......  ### more Parents
+        </DL><p>###
+        ......   ## more Grandparents'
+    </DL><p>##
+    ......  # more Ancestors
+</DL><p>#
+```
+
 **Chrome**
 
 ```html
